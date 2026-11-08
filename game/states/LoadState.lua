@@ -100,9 +100,6 @@ function LoadState:LoadFiles(path)
     MenuState:Initalize()
 end
 
-function LoadState:Update(dt)
-end
-
 function LoadState:Draw()
 	love.graphics.print("hi", 0, 0)
 end

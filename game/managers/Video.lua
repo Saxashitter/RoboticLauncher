@@ -18,6 +18,7 @@ function Video:DrawString(x, y, string)
 			x = x + 2
 			goto continue
 		end
+
 		local filename = (font.."%03d"):format(str:byte())
 		local patch = self.Patches[filename]
 

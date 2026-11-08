@@ -4,16 +4,6 @@ Palette = {
 
 -- manage the currently loaded palette
 
--- i dont wanna mess with the filesystem we setted up
---- @param file love.File
-local function cloneFile(file)
-	local bytes = file:read()
-	local clone = love.filesystem.newFileData(bytes, "cloned_file")
-	local file = love.filesystem.newFile
-
-	return clone
-end
-
 --- @param file love.File
 function Palette:Initalize(file)
 	self.Colors = {}

@@ -2,10 +2,6 @@ MenuState = {}
 
 function MenuState:Initalize()
 	CurrentState = self
-
-	self.selections = {
-		{name = "Hi"}
-	}
 end
 
 local time = 0
