@@ -24,7 +24,6 @@ function Patch.Initalize(file)
 		new.topoffset = new.topoffset - (1 << 16)
 	end
 
-	-- TODO: MASS FUCKING REFACTOR OF THIS, AI SUCKS AT CODING
 	local columns = {}
 	local previousTopDelta = 0
 	for column = 1, new.width do
