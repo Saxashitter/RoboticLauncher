@@ -72,6 +72,7 @@ function Patch.Initalize(file)
 	end
 
 	new.image = love.graphics.newImage(new.imageData)
+	new.image:setFilter("nearest")
 
 	return new
 end

@@ -44,9 +44,7 @@ function RecursiveEnumerate(folder, fileTree)
 end
 
 function LoadState:LoadFiles(path)
-    if not path or path == "" then return end
-
-    -- Normalize Windows separators for LÖVE's virtual filesystem.
+	GamePath = path
     path = path:gsub("\\", "/")
 
 	-- load files...
@@ -76,9 +74,6 @@ function LoadState:LoadFiles(path)
 		local fileData = love.filesystem.newFileData(bytes, v)
 	
 		love.filesystem.mount(fileData, mountpath, mountpath)
-		print("================")
-		print(v)
-		print("================")
 		
 		-- load everything in the folder recursively
 		local folder = RecursiveEnumerate(mountpath)
@@ -99,6 +94,7 @@ function LoadState:LoadFiles(path)
 	-- Patch.Initalize(folders.srb2.Graphics.Titlescreen.Alacroix["T4RIBB25"])
 
     MenuState:Initalize()
+	SideTab:Initalize()
 end
 
 function LoadState:Update() end
