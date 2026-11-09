@@ -55,7 +55,6 @@ function LoadState:LoadFiles(path)
 		"music.pk3",
 		"characters.pk3"
 	}
-	local folders = {}
 
 	for k, v in ipairs(gamefilepaths) do
 		local fullpath = path.."/"..v
@@ -83,22 +82,26 @@ function LoadState:LoadFiles(path)
 		
 		-- load everything in the folder recursively
 		local folder = RecursiveEnumerate(mountpath)
-		folders[path] = folder
+		GameAssets[path] = folder
 
 		love.filesystem.unmount(mountpath)
 	end
 
 	-- setup palette
-	Palette:Initalize(folders["srb2"]["PLAYPAL"])
+	Palette:Initalize(GameAssets["srb2"]["PLAYPAL"])
+
+	-- setup videolib
+	Video:Initalize()
 
 	-- debugging
 	-- Palette:FindClosestColor(1, 0, 0)
-	Sonic = Patch.Initalize(folders.characters["1_Sonic"]["2_Sprites"].STNDA1)
+	Sonic = Patch.Initalize(GameAssets.characters["1_Sonic"]["2_Sprites"].STNDA1)
 	-- Patch.Initalize(folders.srb2.Graphics.Titlescreen.Alacroix["T4RIBB25"])
 
-	GameAssets = folders
     MenuState:Initalize()
 end
+
+function LoadState:Update() end
 
 function LoadState:Draw()
 	love.graphics.print("hi", 0, 0)

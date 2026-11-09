@@ -37,7 +37,7 @@ function Patch.Initalize(file)
 
 		local posts = {}
 		local position = columnOffset + 1
-		local previousTopDelta = 0
+		-- local previousTopDelta = 0
 		while true do
 			local topDelta = byte(data, position)
 			if topDelta == 0xFF then
@@ -45,10 +45,10 @@ function Patch.Initalize(file)
 				break
 			end
 			
-			if topDelta <= previousTopDelta then
-				topDelta = topDelta + previousTopDelta
-			end
-			previousTopDelta = topDelta
+			-- if topDelta <= previousTopDelta then
+			-- 	topDelta = topDelta + previousTopDelta
+			-- end
+			-- previousTopDelta = topDelta
 			
 			local pixelsStart = position + 3
 			local length = byte(data, position + 1)
