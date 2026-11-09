@@ -22,5 +22,8 @@ function MenuState:Draw()
 	local wave = 1 * math.cos(time * 3)
 
 	Sonic:Draw(250, 100, 0, 1, bounce, 0, 0, 0, 0)
+
 	Video:DrawString("Hello, I'm your neighbor!", "tiny", width/2, height/2, 0, scaleX, scaleY, 0, 0, wave, 0, 0.5, 0.5)
+	Video:DrawString("<settings>And I'm StarManiaKG!", "tiny", width/2, height/4, 0, scaleX, scaleY, 0, 0, wave, 0, 0.5, 0.5)
+	Video:DrawString("And this text waves!", "tiny", width/2, height-40, 0, scaleX, scaleY, 0, 0, wave, 0, 0.5, 0.5, StringFlags.V_STRINGDANCE)
 end
