@@ -9,6 +9,7 @@ require("objects.Patch")
 
 require("states.LoadState")
 require("states.MenuState")
+require("states.MultiplayerState")
 
 function love.load()
 	GameAssets = {}
@@ -35,5 +36,19 @@ end
 function love.mousemoved(x, y, dx, dy, touchscreen)
 	if SideTab.Added then
 		SideTab:MouseMoved(x, y)
+	end
+end
+
+function love.mousepressed(x, y, button, touchscreen, presses)
+	-- sidetab should have priority
+	if SideTab.Added and SideTab.Opened then
+		if button == 2 then return end
+
+		SideTab:MousePressed(x, y)
+		return
+	end
+
+	if CurrentState.MousePressed then
+		CurrentState:MousePressed(x, y, button)
 	end
 end

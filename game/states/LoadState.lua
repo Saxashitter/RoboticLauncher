@@ -99,6 +99,7 @@ function LoadState:LoadFiles(path)
 	-- Patch.Initalize(folders.srb2.Graphics.Titlescreen.Alacroix["T4RIBB25"])
 
     MenuState:Initalize()
+	SideTab:Initalize()
 end
 
 function LoadState:Update() end

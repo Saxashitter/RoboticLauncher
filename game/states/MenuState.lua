@@ -1,11 +1,12 @@
 MenuState = {}
 
+local time = 0
+
 function MenuState:Initalize()
 	CurrentState = self
-	SideTab:Initalize()
+	time = 0
 end
 
-local time = 0
 
 function MenuState:Update(dt)
 	time = time + dt
@@ -14,7 +15,6 @@ end
 function MenuState:Draw()
 	-- love.graphics.circle("fill", 24, 12, 12)
 	local bounce = math.cos(time * 2)
-	local angle = math.rad(20 * math.cos(time*4))
 
 	local width, height = love.graphics.getDimensions()
 	local scaleX = 3 -- * math.abs(math.cos(time))
