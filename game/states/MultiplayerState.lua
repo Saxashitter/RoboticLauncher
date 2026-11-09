@@ -20,5 +20,11 @@ function MultiplayerState:Draw()
 	local scaleY = 3 -- * math.abs(math.sin(time/2))
 	local wave = 1 * math.cos(time * 3)
 
-	Video:DrawString("dis is Multi", "default", width/2, height/2, 0, scaleX, scaleY, 0, 0, wave, 0, 0.5, 0.5)
+	Video:DrawString("click to start srb2 lol", "default", width/2, height/2, 0, scaleX, scaleY, 0, 0, 0, 0, 0.5, 0.5)
+end
+
+local format = ('cd "%s" & "%s/srb2win.exe')
+
+function MultiplayerState:MousePressed(x, y)
+	os.execute(format:format(GamePath, GamePath))
 end
