@@ -12,6 +12,10 @@ require("states.LoadState")
 require("states.MenuState")
 require("states.MultiplayerState")
 
+-- @todo Maybe every single require here isn't necessary?
+-- It helps with compiling literally everything yes,
+-- but I'm not sure if it's like cool to do this or not
+
 love2d_main_directory = love.filesystem.getRealDirectory("main.lua");
 gameicons_directory = (love2d_main_directory .. "/" .. "gameicons");
 
@@ -32,9 +36,7 @@ else
 	resource_hacker_program = resource_hacker_program:gsub("\\", "/");
 end
 
--- @todo Maybe every single require here isn't necessary?
--- It helps with compiling literally everything yes,
--- but I'm not sure if it's like cool to do this or not
+-- @todo Above might need to be moved too? Eh...
 
 local function RemoveFull(item)
 	if (love.filesystem.getInfo(item, "directory")) then
