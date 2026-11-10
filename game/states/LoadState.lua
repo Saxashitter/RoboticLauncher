@@ -1,4 +1,36 @@
 LoadState = {}
+LoadState.MainPath = ""
+
+Game = {}
+Game.EXEName = ""
+Game.EXEType = ""
+Game.Path = ""
+Game.Format = ""
+
+local function ReturnFileDirectory(string, fix_string)
+	if (love.system.getOS() == "Windows") then
+		string = string:gsub("/", "\\");
+	else
+		string = string:gsub("\\", "/");
+	end
+	if (string) then
+		local directory_path_end = string:find("/[^/]*$");
+		string = string:sub(1, directory_path_end-1);
+	end
+	return string;
+end
+
+local function ReturnFilename(string, no_extension)
+	local filename = string:sub(string:find("/[^/]*$") + 1);
+	if (no_extension) then
+		filename = filename:sub(1, filename:match(".*()%.") - 1);
+	end
+	return filename;
+end
+
+local function ReturnFiletype(string)
+	return string:sub(string:find(".[^.]*$") + 1);
+end
 
 function LoadState:Initalize()
 	CurrentState = self
@@ -43,9 +75,93 @@ function RecursiveEnumerate(folder, fileTree)
 	return tree
 end
 
+function LoadState:ValidGamePath(path, exename, exetype)
+	local lfile = love.filesystem;
+	local OS = love.system.getOS();
+
+	local filename = ("%s/%s.%s"):format(path, exename, exetype);
+	if (OS == "Windows") then
+		filename = filename:gsub("/", "\\");
+	end
+
+	if (lfile.openNativeFile and lfile.openNativeFile(filename, "r")) then
+		-- Pretty sure this is a relatively new function, so...
+		-- so I wanna make sure things stay compatible between LOVE2D versions
+		return true;
+	end	
+	return (lfile.exists(filename) and lfile.isFile(filename));
+end
+
+-- @todo TODO: search directory automatically for executable :p
+-- @note (preferably with love.filesystem.getDirectoryItems?)
+function LoadState:SetGameJunk(path)
+	local OS = love.system.getOS();
+	local executable_name;
+	local executable_type;
+
+	if (OS ~= "Windows" and OS ~= "OS X" and OS ~= "iOS" and OS ~= "Linux" and OS ~= "Android") then
+		print("Unknown OS, can't launch game!");
+		return;
+	end
+
+	if (OS == "Windows") then
+		executable_name = "srb2win";
+		executable_type = "exe";
+	elseif (OS == "OS X") then
+		-- ngl i dunno how to launch this lol
+		executable_name = "srb2";
+		executable_type = "darwin";
+	elseif (OS == "iOS") then
+		executable_name = "srb2";
+		executable_type = "ipa";
+	elseif (OS == "Linux") then
+		executable_name = "lsdl2srb2";
+		executable_type = "";
+	elseif (OS == "Android") then
+		executable_name = "srb2-android";
+		executable_type = "apk";
+	end
+
+	if not (LoadState:ValidGamePath(path, executable_name, executable_type)) then
+		print(("Couldn't find executable (%s/%s.%s), please select it."):format(path, executable_name, executable_type));
+		---@diagnostic disable-next-line: undefined-field
+		love.window.showFileDialog("openfile", function(files, filtername, errorstring)
+			if (errorstring) then
+				error(errorstring);
+				return;
+			end
+			if (files[1]) then
+				local filename = files[1];
+				filename = filename:gsub("\\", "/");
+				Game.Path = ReturnFileDirectory(filename, true);
+				Game.EXEName = ReturnFilename(filename, true);
+				Game.EXEType = ReturnFiletype(filename);
+				Game.Format = ('cd "%s" & "%s/%s.%s"');
+				print(("Found executable! (%s/%s.%s)"):format(Game.Path, Game.EXEName, Game.EXEType));
+				return true;
+			else
+				print("Game exectuable not found.");
+				return false;
+			end
+		end)
+	else
+		if (OS == "Windows") then
+			Game.Path = path:gsub("/", "\\");
+		else
+			Game.Path = path:gsub("\\", "/");
+		end
+		Game.EXEName = executable_name;
+		Game.EXEType = executable_type;
+		Game.Format = ('cd "%s" & "%s/%s.%s"');
+	end
+end
+
 function LoadState:LoadFiles(path)
-	GamePath = path
-    path = path:gsub("\\", "/")
+	path = path:gsub("\\", "/");
+	if (LoadState.MainPath == "") then
+		LoadState.MainPath = path;
+		LoadState:SetGameJunk(path);
+	end
 
 	-- load files...
     local gamefilepaths = {
@@ -93,6 +209,7 @@ function LoadState:LoadFiles(path)
 	Sonic = Patch.Initalize(GameAssets.characters["1_Sonic"]["2_Sprites"].STNDA1)
 	-- Patch.Initalize(folders.srb2.Graphics.Titlescreen.Alacroix["T4RIBB25"])
 
+	-- menus
     MenuState:Initalize()
 	SideTab:Initalize()
 end

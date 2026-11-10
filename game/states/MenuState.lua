@@ -1,12 +1,10 @@
 MenuState = {}
-
 local time = 0
 
 function MenuState:Initalize()
 	CurrentState = self
 	time = 0
 end
-
 
 function MenuState:Update(dt)
 	time = time + dt

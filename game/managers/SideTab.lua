@@ -38,6 +38,7 @@ function SideTab:Initalize()
 	self.Added = true
 	self.Tick = love.audio.newSource(GameAssets.srb2.Sounds.SRB2.DSMENU1, "static")
 	self.Confirm = love.audio.newSource(GameAssets.srb2.Sounds.SRB2.DSSTRPST, "static")
+	self.Error = love.audio.newSource(GameAssets.srb2.Sounds.SRB2.DSLOSE, "static")
 end
 
 --- the side tab gets removed
@@ -49,7 +50,6 @@ function SideTab:GetWidth()
 	if self.Opened then
 		return SIDETAB_OPENED_WIDTH
 	end
-
 	return SIDETAB_CLOSED_WIDTH
 end
 
@@ -139,6 +139,9 @@ function SideTab:MousePressed(x, y)
 		return
 	end
 
+	-- @todo TODO make this better lmfao
+	-- maybe like the sounds get stored in an array and then we have a function just do this for us?
+	-- @note like the Icons and Font stuff?
 	self.Confirm:stop()
 	self.Confirm:play()
 
