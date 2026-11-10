@@ -8,15 +8,21 @@ Game.Path = ""
 Game.Format = ""
 
 local function ReturnFileDirectory(string, fix_string)
+	local directory_slash;
+	local directory_path_end;
+
 	if (love.system.getOS() == "Windows") then
+		directory_slash = "\\";
 		string = string:gsub("/", "\\");
 	else
+		directory_slash = "/";
 		string = string:gsub("\\", "/");
 	end
-	if (string) then
-		local directory_path_end = string:find("/[^/]*$");
+	if (fix_string) then
+		directory_path_end = string:find(("%s[^%s]*$"):format(directory_slash, directory_slash));
 		string = string:sub(1, directory_path_end-1);
 	end
+
 	return string;
 end
 
@@ -138,6 +144,7 @@ function LoadState:SetGameJunk(path)
 				Game.EXEType = ReturnFiletype(filename);
 				Game.Format = ('cd "%s" & "%s/%s.%s"');
 				print(("Found executable! (%s/%s.%s)"):format(Game.Path, Game.EXEName, Game.EXEType));
+				SRB2:GetGameIcon();
 				return true;
 			else
 				print("Game exectuable not found.");
@@ -153,6 +160,7 @@ function LoadState:SetGameJunk(path)
 		Game.EXEName = executable_name;
 		Game.EXEType = executable_type;
 		Game.Format = ('cd "%s" & "%s/%s.%s"');
+		SRB2:GetGameIcon();
 	end
 end
 
